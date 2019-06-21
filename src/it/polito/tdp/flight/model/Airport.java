@@ -1,6 +1,8 @@
 package it.polito.tdp.flight.model;
 
-public class Airport {
+import com.javadocmd.simplelatlng.LatLng;
+
+public class Airport implements Comparable<Airport> {
 
 	private int airportId;
 	private String name;
@@ -8,11 +10,12 @@ public class Airport {
 	private String country;
 	private String iataFaa;
 	private String icao;
-	private double latitude;
-	private double longitude;
+    private LatLng coord;
 	private float timezone;
 	private String dst;
 	private String tz;
+	
+	private int num_turisti;
 
 	public Airport(int airportId, String name, String city, String country, String iataFaa, String icao,
 			double latitude, double longitude, float timezone, String dst, String tz) {
@@ -23,8 +26,7 @@ public class Airport {
 		this.country = country;
 		this.iataFaa = iataFaa;
 		this.icao = icao;
-		this.latitude = latitude;
-		this.longitude = longitude;
+		this.coord = new LatLng(latitude, longitude);
 		this.timezone = timezone;
 		this.dst = dst;
 		this.tz = tz;
@@ -78,21 +80,7 @@ public class Airport {
 		this.icao = icao;
 	}
 
-	public double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
+	
 
 	public float getTimezone() {
 		return timezone;
@@ -118,6 +106,23 @@ public class Airport {
 		this.tz = tz;
 	}
 
+	public int getTuristi() {
+		return this.num_turisti;
+	}
+	
+	public void azzeraTuristi() {
+		this.num_turisti = 0;
+	}
+	
+	public void arrivaTurista(Integer tu) {
+		this.num_turisti+=tu;
+		
+	}
+	
+	public void lasciaTurist() {
+		this.num_turisti--;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -152,5 +157,19 @@ public class Airport {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public LatLng getCoord() {
+		return coord;
+	}
+
+	public void setCoord(LatLng coord) {
+		this.coord = coord;
+	}
+
+	@Override
+	public int compareTo(Airport a) {
+		// TODO Auto-generated method stub
+		return a.num_turisti-this.num_turisti;
 	}
 }

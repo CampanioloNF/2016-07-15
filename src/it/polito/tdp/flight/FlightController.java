@@ -27,15 +27,63 @@ public class FlightController {
 
 	@FXML
 	private TextArea txtResult;
+	
+	private int distMax = 0;
 
 	@FXML
 	void doCreaGrafo(ActionEvent event) {
+		
+		txtResult.clear();
+		
+		try {
+			
+			if(txtDistanzaInput.getText()!=null)
+		    	distMax = Integer.parseInt(txtDistanzaInput.getText());
+		    else {
+		      txtResult.appendText("Si prega di inserire un numero intero, grazie.\n");
+		      return;
+		    }
+			
+			
+			model.creaGrafo(distMax);
+			
+			if(model.isConnected())
+				txtResult.appendText("Tutte le destinazioni sono raggiungibili da qualunque aereoporto.\n");
+			else
+				txtResult.appendText("Non tutte le destinazioni sono raggiungibili da qualunque aereoporto.\n");
+			
+			txtResult.appendText("L'aereoporto, raggiungibile, più lontano da fiumicino è : "+model.getAirport()+"\n");
+			
+			
+		}catch(NumberFormatException nfe) {
+			txtResult.appendText("Si prega di inserire un numero intero, grazie.");
+			return;
+		}
 		
 	}
 
 	@FXML
 	void doSimula(ActionEvent event) {
 		
+		txtResult.clear();
+		
+		try {
+		
+		if(distMax>0 && distMax==Integer.parseInt(txtDistanzaInput.getText())) {
+			
+	          txtResult.appendText("Sistemazione dei turisti: \n\n");
+	          txtResult.appendText(model.simulate(Integer.parseInt(txtPasseggeriInput.getText())));
+	          
+			
+		}
+		else {
+			txtResult.appendText("Nel caso in cui si voglia cambiare la distanza massima considerata, premere nuovamente 'Seleziona Rotte', grazie.");
+	        return;
+		}
+		}catch(NumberFormatException nfe) {
+			txtResult.appendText("Si prega di selezionare un numero intero di passeggeri.");
+			return;
+		}
 	}
 
 	@FXML
@@ -50,3 +98,4 @@ public class FlightController {
 		this.model = model;
 	}
 }
+
